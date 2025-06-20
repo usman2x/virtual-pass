@@ -19,36 +19,6 @@ At the start of each day, the system will automatically generate all time slots 
 Visitors should also be able to change or cancel their booking, as long as they do it before a specific cutoff time. 
 Lastly, each visitor will be able to view all their current and upcoming bookings easily.
 
-# Solution
-
-I will use following step-by-step implementation plan for virtual queue system using Java, Spring Boot, REST APIs, MVC architecture, a relational database, and scheduled notifications:
-
-**1. Project Setup:**
-Start by creating a Spring Boot project using Maven and follow the MVC pattern. Use separate packages for controllers, services, repositories, and entities. Spring Data JPA will handle database access, and the project will expose REST APIs for interaction.
-
-**2. Database Design:**
-Design a relational schema with tables for Visitors, Rides, TimeSlots, Bookings, and Notifications. Model relationships such as each ride having multiple slots and each visitor having multiple bookings. Enforce constraints for slot capacity and no overlapping bookings.
-
-**3. Daily Slot Generation:**
-Implement a scheduled job that runs at the start of each day to auto-generate 30-minute slots for every ride. Each slot is linked to a ride and has its own capacity, ensuring the system is ready to take bookings every morning.
-
-**4. REST API for Bookings:**
-Create REST endpoints for booking, canceling, and viewing rides. The booking process includes validating slot availability, checking for overlapping bookings, and updating capacity. Assume payment is completed before final confirmation.
-
-**5. Booking Management:**
-Enable visitors to manage their bookings—view current ones, cancel before a cutoff time, or reschedule. Cancellation restores slot capacity and ensures cutoff time rules are enforced.
-
-**6. Notifications:**
-Set up a background scheduler that runs periodically to send reminders for upcoming rides. Initially log-based, this can later be connected to real notification services. Track sent notifications to avoid duplicates.
-
-**7. Web or QR Booking Flow:**
-Allow users to book through a web portal or by scanning a ride-specific QR code that links to available time slots. Frontend interacts with the backend via REST APIs.
-
-
-Excellent — you're doing exactly the right thing by focusing on **business requirements and assumptions** first. Let's now break down your input into clear, well-defined **functional and non-functional requirements** and **prepare for the system design** stage.
-
----
-
 ## Functional Requirements (FRs)
 
 ### ✅ Slot & Ride Management
@@ -130,3 +100,26 @@ Excellent — you're doing exactly the right thing by focusing on **business req
 7. Can cancel or modify (before allowed time)
 8. Shows QR code or app at ride entrance
 
+# Solution
+I will use following step-by-step implementation plan for virtual queue system using Java, Spring Boot, REST APIs, MVC architecture, a relational database, and scheduled notifications:
+
+**1. Project Setup:**
+Start by creating a Spring Boot project using Maven and follow the MVC pattern. Use separate packages for controllers, services, repositories, and entities. Spring Data JPA will handle database access, and the project will expose REST APIs for interaction.
+
+**2. Database Design:**
+Design a relational schema with tables for Visitors, Rides, TimeSlots, Bookings, and Notifications. Model relationships such as each ride having multiple slots and each visitor having multiple bookings. Enforce constraints for slot capacity and no overlapping bookings.
+
+**3. Daily Slot Generation:**
+Implement a scheduled job that runs at the start of each day to auto-generate 30-minute slots for every ride. Each slot is linked to a ride and has its own capacity, ensuring the system is ready to take bookings every morning.
+
+**4. REST API for Bookings:**
+Create REST endpoints for booking, canceling, and viewing rides. The booking process includes validating slot availability, checking for overlapping bookings, and updating capacity. Assume payment is completed before final confirmation.
+
+**5. Booking Management:**
+Enable visitors to manage their bookings—view current ones, cancel before a cutoff time, or reschedule. Cancellation restores slot capacity and ensures cutoff time rules are enforced.
+
+**6. Notifications:**
+Set up a background scheduler that runs periodically to send reminders for upcoming rides. Initially log-based, this can later be connected to real notification services. Track sent notifications to avoid duplicates.
+
+**7. Web or QR Booking Flow:**
+Allow users to book through a web portal or by scanning a ride-specific QR code that links to available time slots. Frontend interacts with the backend via REST APIs.
