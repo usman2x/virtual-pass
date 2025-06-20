@@ -43,3 +43,90 @@ Set up a background scheduler that runs periodically to send reminders for upcom
 
 **7. Web or QR Booking Flow:**
 Allow users to book through a web portal or by scanning a ride-specific QR code that links to available time slots. Frontend interacts with the backend via REST APIs.
+
+
+Excellent — you're doing exactly the right thing by focusing on **business requirements and assumptions** first. Let's now break down your input into clear, well-defined **functional and non-functional requirements** and **prepare for the system design** stage.
+
+---
+
+## Functional Requirements (FRs)
+
+### ✅ Slot & Ride Management
+
+* \[FR1] System auto-generates **daily ride slots** at the start of each day (48 × 30-min slots per ride).
+* \[FR2] Each ride has a configurable **maximum capacity per slot**.
+
+### ✅ Booking Logic
+
+* \[FR3] A visitor can book **a slot for self or family** (within slot capacity).
+* \[FR4] **No overlapping bookings** allowed for the same visitor.
+* \[FR5] Booking is confirmed after **payment**.
+* \[FR6] Slot availability is updated in **real-time** as bookings happen.
+
+### ✅ Booking Interaction
+
+* \[FR7] Visitors can book:
+
+  * By **scanning a QR code** at the facility
+  * Using a **web/mobile portal**
+* \[FR8] Visitors can **view all their bookings**.
+* \[FR9] Visitors can **cancel** or **change** a booking before a specified cutoff time (e.g., 30 mins before slot).
+
+### ✅ Notifications
+
+* \[FR10] System sends **notifications** (e.g., 15–30 minutes before ride time), based on booking or app preference.
+
+---
+
+## 🚫 Constraints and Business Rules
+
+* \[R1] **One active booking per time slot** per visitor.
+* \[R2] **No overbooking** — check and enforce capacity before confirming.
+* \[R3] Visitors **cannot cancel** a booking **after the cutoff time**.
+* \[R4] **System time is in park's local time zone**.
+
+---
+
+## 📊 Scale and Performance Considerations
+
+| Item                 | Assumption             |
+| -------------------- | ---------------------- |
+| Visitors per day     | \~10,000               |
+| Rides                | 50 total               |
+| Slots per ride/day   | 48 (30-min each × 24h) |
+| Bookings per day     | Up to 100,000+         |
+| Peak booking periods | 1000+ bookings/hour    |
+
+---
+
+## 📌 Suggested Entities (Domain Model)
+
+| Entity           | Attributes                                                                             |
+| ---------------- | -------------------------------------------------------------------------------------- |
+| **Visitor**      | id, name, email/phone, QR ID                                                           |
+| **Ride**         | id, name, description, capacity per slot                                               |
+| **TimeSlot**     | id, ride\_id, start\_time, capacity, booked\_count                                     |
+| **Booking**      | id, visitor\_id, slot\_id, num\_guests, status (confirmed, cancelled), payment\_status |
+| **Notification** | id, visitor\_id, booking\_id, time\_sent                                               |
+
+---
+
+## 📅 Day Start Job (Slot Generator)
+
+* Runs daily at **midnight** or park open time
+* For each ride, create 48 slots
+* Each slot has `ride_id`, `start_time`, `capacity`, and `0 booked_count`
+
+---
+
+## 📲 User Journey Summary (Web/Mobile/QR Flow)
+
+1. Visitor logs in or scans QR
+2. Chooses a ride and sees available slots
+3. Selects slot and number of guests
+4. Confirms booking and completes payment
+5. Receives booking confirmation
+6. Receives reminder notification before ride
+7. Can cancel or modify (before allowed time)
+8. Shows QR code or app at ride entrance
+
