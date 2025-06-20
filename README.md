@@ -78,7 +78,7 @@ Excellent — you're doing exactly the right thing by focusing on **business req
 
 ---
 
-## 🚫 Constraints and Business Rules
+## Constraints and Business Rules
 
 * \[R1] **One active booking per time slot** per visitor.
 * \[R2] **No overbooking** — check and enforce capacity before confirming.
@@ -99,7 +99,7 @@ Excellent — you're doing exactly the right thing by focusing on **business req
 
 ---
 
-## 📌 Suggested Entities (Domain Model)
+## Suggested Entities (Domain Model)
 
 | Entity           | Attributes                                                                             |
 | ---------------- | -------------------------------------------------------------------------------------- |
@@ -111,7 +111,7 @@ Excellent — you're doing exactly the right thing by focusing on **business req
 
 ---
 
-## 📅 Day Start Job (Slot Generator)
+## Day Start Job (Slot Generator)
 
 * Runs daily at **midnight** or park open time
 * For each ride, create 48 slots
@@ -119,7 +119,7 @@ Excellent — you're doing exactly the right thing by focusing on **business req
 
 ---
 
-## 📲 User Journey Summary (Web/Mobile/QR Flow)
+## User Journey Summary (Web/Mobile/QR Flow)
 
 1. Visitor logs in or scans QR
 2. Chooses a ride and sees available slots
